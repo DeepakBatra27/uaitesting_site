@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="uaitesting — unifying artificial intelligence for the campus. A single AI-powered portal bringing chat, email, timetable, library, lost & found, and hospital information together for university students." />
+  <title>uaitesting — Unifying Artificial Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #111111;
+      --bg-elevated: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --text-muted: #555555;
+      --text-body: #cccccc;
+      --accent: #ffffff;
+      --border: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.2);
+      --status-red: #ef4444;
+      --status-green: #22c55e;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 999px;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Nav */
+    nav.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-main);
+      border-bottom: 1px solid var(--border);
+    }
+    nav.topbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-profile {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--text-body);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+    .hero-logo {
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .hero-tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+    .hero-divider {
+      width: 340px;
+      height: 1px;
+      background: var(--text-secondary);
+      margin: 0 auto 40px;
+      max-width: 80%;
+    }
+    .hero-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-body);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .btn-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 40px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: opacity 0.2s, background 0.2s;
+      cursor: pointer;
+      border: 1px solid transparent;
+      min-height: 48px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+    .btn-secondary:hover { background: var(--bg-elevated); }
+
+    /* Section */
+    section {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+    .section-head {
+      max-width: 720px;
+      margin: 0 auto 56px;
+      text-align: center;
+    }
+    .section-head .label {
+      display: block;
+      margin-bottom: 16px;
+    }
+    .section-head h2 {
+      font-size: clamp(28px, 3.5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-head p {
+      font-size: 16px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* About */
+    .about-text {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .about-text p {
+      font-size: 16px;
+      color: var(--text-body);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+    .about-text p strong { color: var(--text-primary); font-weight: 600; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 900px;
+      margin: 56px auto 0;
+    }
+    .stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Modules grid */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      background: var(--bg-elevated);
+      border-color: var(--border-strong);
+    }
+    .module-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      padding: 4px 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+    }
+    .module-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .module-card p {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* Vision list */
+    .vision-list {
+      max-width: 760px;
+      margin: 0 auto;
+      list-style: none;
+    }
+    .vision-list li {
+      display: flex;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .vision-list li:last-child { border-bottom: none; }
+    .vision-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      min-width: 40px;
+      padding-top: 4px;
+    }
+    .vision-body h4 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .vision-body p {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* Contact */
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 56px 40px;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .contact-card h2 {
+      font-size: clamp(26px, 3vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .contact-card > p {
+      font-size: 15px;
+      color: var(--text-body);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .contact-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .contact-item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px 18px;
+      text-align: left;
+    }
+    .contact-item .label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .contact-item a {
+      display: block;
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+      word-break: break-all;
+      transition: color 0.2s;
+    }
+    .contact-item a:hover { color: var(--text-body); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Footer */
+    footer {
+      padding: 48px 0 40px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      text-align: center;
+    }
+    .footer-tagline {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .footer-links a:hover { color: var(--text-body); }
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .hero { padding: 80px 0 56px; }
+      .hero-logo { font-size: 64px; }
+      section { padding: 56px 0; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .contact-list { grid-template-columns: 1fr; }
+      .contact-card { padding: 36px 22px; }
+      .vision-list li { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="container">
+      <div class="brand">uaitesting</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#modules">Modules</a></li>
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-profile">u</div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-logo">uaitesting</div>
+      <div class="hero-tagline">unifying artificial intelligence</div>
+      <div class="hero-divider"></div>
+      <h1 class="hero-title">One AI-powered portal for the entire campus.</h1>
+      <p class="hero-sub">
+        uaitesting brings ten independently-built campus services — chat, email, timetable, library, lost &amp; found, and more — into a single seamless experience for university students.
+      </p>
+      <div class="btn-row">
+        <a href="#about" class="btn btn-primary">Learn more</a>
+        <a href="#contact" class="btn btn-secondary">Contact us</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <span class="label">About us</span>
+        <h2>A unified platform for university life.</h2>
+        <p>
+          We build software that brings disconnected campus tools under one roof — designed for IIT Delhi students, with around 7,000 students in scope at the platform's current stage.
+        </p>
+      </div>
+      <div class="about-text">
+        <p>
+          <strong>uaitesting</strong> develops a campus-wide AI platform that unifies the everyday services a university student needs into a single interface — backed by an in-house large language model service, vector search, and real integrations with institute systems like LDAP, IMAP email, library OPAC, and timetable data.
+        </p>
+        <p>
+          At its core sits <strong>Horizon</strong>, our conversational AI agent, which understands intent across structured data (timetables, courses, emails) and unstructured data (library catalog, hospital information). Around Horizon, we layer focused modules — each previously a standalone tool — so students no longer juggle five different portals to get through a single day.
+        </p>
+        <p>
+          We treat the campus as a real production environment: <strong>LDAP-only authentication</strong> means we never store passwords, JWT-secured microservices isolate failure domains, and every AI interaction routes through a centralized inference service so we can reason about cost, latency, and safety as one system rather than ten.
+        </p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Modules unified</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">7,000</div>
+          <div class="stat-label">Students in scope</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Microservices</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">2026</div>
+          <div class="stat-label">Founded</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules">
+    <div class="container">
+      <div class="section-head">
+        <span class="label">What we do</span>
+        <h2>Six AI-powered modules. One sign-in.</h2>
+        <p>
+          Every module shares the same authentication, the same design language, and the same intelligence layer — so behavior and quality stay consistent across the platform.
+        </p>
+      </div>
+      <div class="modules-grid">
+        <div class="module-card">
+          <span class="module-tag">Chat · Horizon</span>
+          <h3>Conversational AI agent</h3>
+          <p>Horizon answers campus questions across courses, timetables, emails, library catalog, and hospital info — with hybrid vector + keyword search and conversation memory.</p>
+        </div>
+        <div class="module-card">
+          <span class="module-tag">Email</span>
+          <h3>Smart inbox</h3>
+          <p>Pulls real IITD IMAP email, classifies urgency, surfaces deadlines, and lets Horizon answer "when is the FEE deadline?" by reading actual messages — never by guessing.</p>
+        </div>
+        <div class="module-card">
+          <span class="module-tag">Timetable</span>
+          <h3>Real schedules</h3>
+          <p>Generates a student's actual weekly timetable from institute course data, with semester week numbering, conflict detection, and personal edits.</p>
+        </div>
+        <div class="module-card">
+          <span class="module-tag">Library</span>
+          <h3>Searchable OPAC</h3>
+          <p>A resilient frontend on top of the institute library — fuzzy and spell-corrected search, response caching, and a circuit breaker for the upstream catalog.</p>
+        </div>
+        <div class="module-card">
+          <span class="module-tag">Lost &amp; Found</span>
+          <h3>Image-based matching</h3>
+          <p>Visual search powered by DINOv2 image embeddings so a photo of a lost item can find its match — text descriptions optional, not required.</p>
+        </div>
+        <div class="module-card">
+          <span class="module-tag">Hospital</span>
+          <h3>Information bot</h3>
+          <p>A retrieval-augmented assistant for institute hospital information — clinic hours, services, emergency contacts — grounded in source documents, not model memory.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vision">
+    <div class="container">
+      <div class="section-head">
+        <span class="label">What we plan to do</span>
+        <h2>Where uaitesting is headed.</h2>
+        <p>
+          We're early. The platform works end-to-end today; the next phase is depth, reach, and trust.
+        </p>
+      </div>
+      <ul class="vision-list">
+        <li>
+          <span class="vision-num">01</span>
+          <div class="vision-body">
+            <h4>Deepen Horizon's understanding</h4>
+            <p>Improve cross-module reasoning so a single question can pull from courses, emails, and timetable in one answer — with pronoun resolution and persistent memory.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vision-num">02</span>
+          <div class="vision-body">
+            <h4>Expand beyond IIT Delhi</h4>
+            <p>Generalize the institute integrations (LDAP, IMAP, OPAC, hospital RAG) into pluggable connectors so other universities can adopt the platform without rebuilding it.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vision-num">03</span>
+          <div class="vision-body">
+            <h4>Self-hosted LLM service</h4>
+            <p>Move from a managed inference provider to a self-hosted model where it makes sense — for cost, latency, and data residency — while keeping the centralized inference contract.</p>
+          </div>
+        </li>
+        <li>
+          <span class="vision-num">04</span>
+          <div class="vision-body">
+            <h4>Safety, observability, and assurance</h4>
+            <p>Build out evaluation harnesses, drift detection, and audit-grade logging so the platform stays trustworthy as it scales across campuses.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="contact-card">
+        <span class="label" style="display:block;margin-bottom:14px;">Get in touch</span>
+        <h2>Talk to us.</h2>
+        <p>Reach out for partnerships, demos, or anything technical.</p>
+        <div class="contact-list">
+          <div class="contact-item">
+            <span class="label">Company</span>
+            <a href="mailto:admin1@uaitesting.com">admin1@uaitesting.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="label">Developer</span>
+            <a href="mailto:ee3251276@iitd.ac.in">ee3251276@iitd.ac.in</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-tagline">Powering the Next Generation</div>
+      <div class="footer-links">
+        <a href="#about">Privacy</a>
+        <a href="#about">Terms</a>
+        <a href="#contact">Support</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 uaitesting. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
